@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="Victor" content="width=device-width, initial-scale=1.0">
+    <title>Zapatería CRUD</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Registro de Zapatos</h2>
+
+<form id="shoeForm">
+    <label for="marca">Marca:</label>
+    <input type="text" id="marca" name="marca" required><br><br>
+
+    <label for="talla">Talla:</label>
+    <input type="text" id="talla" name="talla" required><br><br>
+
+    <label for="tipo">Tipo:</label>
+    <input type="text" id="tipo" name="tipo" required><br><br>
+
+    <label for="precio">Precio:</label>
+    <input type="number" id="precio" name="precio" required><br><br>
+
+    <label for="color">Color:</label>
+    <input type="text" id="color" name="color" required><br><br>
+
+    <label for="cantidad">Cantidad:</label>
+    <input type="number" id="cantidad" name="cantidad" required><br><br>
+
+    <label for="promocion">Promoción:</label>
+    <input type="text" id="promocion" name="promocion"><br><br>
+
+    <label for="imagen">Imagen URL:</label>
+    <input type="url" id="imagen" name="imagen"><br><br>
+
+    <label for="proveedor">Proveedor:</label>
+    <input type="text" id="proveedor" name="proveedor" required><br><br>
+
+    <label for="stock">Stock:</label>
+    <input type="number" id="stock" name="stock" required><br><br>
+
+    <button type="button" onclick="addShoe()">Registrar</button>
+</form>
+
+<h2>Listado de Zapatos</h2>
+
+<table id="shoeTable">
+    <thead>
+        <tr>
+            <th>Marca</th>
+            <th>Talla</th>
+            <th>Tipo</th>
+            <th>Precio</th>
+            <th>Color</th>
+            <th>Cantidad</th>
+            <th>Promoción</th>
+            <th>Imagen</th>
+            <th>Proveedor</th>
+            <th>Stock</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody id="shoeTableBody">
+        <!-- Rows will be added here dynamically -->
+    </tbody>
+</table>
+
+<script>
+    let shoes = [];
+
+    function addShoe() {
+        const shoeForm = document.forms.shoeForm;
+        const newShoe = {
+            marca: shoeForm.marca.value,
+            talla: shoeForm.talla.value,
+            tipo: shoeForm.tipo.value,
+            precio: shoeForm.precio.value,
+            color: shoeForm.color.value,
+            cantidad: shoeForm.cantidad.value,
+            promocion: shoeForm.promocion.value,
+            imagen: shoeForm.imagen.value,
+            proveedor: shoeForm.proveedor.value,
+            stock: shoeForm.stock.value
+        };
+        shoes.push(newShoe);
+        renderTable();
+        shoeForm.reset();
+    }
+
+    function renderTable() {
+        const tableBody = document.getElementById('shoeTableBody');
+        tableBody.innerHTML = '';
+        shoes.forEach((shoe, index) => {
+            const row = document.createElement('tr');
+            for (const key in shoe) {
+                const cell = document.createElement('td');
+                if (key === 'imagen') {
+                    const img = document.createElement('img');
+                    img.src = shoe[key];
+                    img.width = 50;
+                    cell.appendChild(img);
+                } else {
+                    cell.innerText = shoe[key];
+                }
+                row.appendChild(cell);
+            }
+            const actionsCell = document.createElement('td');
+            actionsCell.innerHTML = `<button onclick="editShoe(${index})">Editar</button>
+                                     <button onclick="deleteShoe(${index})">Eliminar</button>`;
+            row.appendChild(actionsCell);
+            tableBody.appendChild(row);
+        });
+    }
+
+    function editShoe(index) {
+        const shoe = shoes[index];
+        const shoeForm = document.forms.shoeForm;
+        shoeForm.marca.value = shoe.marca;
+        shoeForm.talla.value = shoe.talla;
+        shoeForm.tipo.value = shoe.tipo;
+        shoeForm.precio.value = shoe.precio;
+        shoeForm.color.value = shoe.color;
+        shoeForm.cantidad.value = shoe.cantidad;
+        shoeForm.promocion.value = shoe.promocion;
+        shoeForm.imagen.value = shoe.imagen;
+        shoeForm.proveedor.value = shoe.proveedor;
+        shoeForm.stock.value = shoe.stock;
+        deleteShoe(index);
+    }
+
+    function deleteShoe(index) {
+        shoes.splice(index, 1);
+        renderTable();
+    }
+</script>
+
+</body>
+</html>
