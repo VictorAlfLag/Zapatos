@@ -1,13 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zapatería CRUD con Firebase</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        header, footer {
+            background-color: #007BFF;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            width: 100%;
+        }
+        header img {
+            max-width: 50px;
+            vertical-align: middle;
+        }
+        header h1 {
+            display: inline;
+            margin-left: 10px;
+        }
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 80%;
+            max-width: 800px;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: 20px;
         }
         table, th, td {
             border: 1px solid black;
@@ -16,6 +53,20 @@
             padding: 8px;
             text-align: left;
         }
+        img {
+            width: 50px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+        form label, form input, form button {
+            margin: 5px 0;
+        }
+        form button {
+            align-self: center;
+        }
     </style>
     <!-- Incluir Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.9.3/firebase-app-compat.js"></script>
@@ -23,12 +74,12 @@
     <script>
         // Configuración de Firebase
         const firebaseConfig = {
-            apiKey: "TU_API_KEY",
-            authDomain: "TU_AUTH_DOMAIN",
-            projectId: "TU_PROJECT_ID",
-            storageBucket: "TU_STORAGE_BUCKET",
-            messagingSenderId: "TU_MESSAGING_SENDER_ID",
-            appId: "TU_APP_ID"
+            apiKey: "YOUR_API_KEY",
+            authDomain: "zapateria-b222f.firebaseapp.com",
+            projectId: "zapateria-b222f",
+            storageBucket: "zapateria-b222f.appspot.com",
+            messagingSenderId: "697116944046",
+            appId: "1:697116944046:web:2c07f68a503be92a29af3f"
         };
         // Inicializar Firebase
         firebase.initializeApp(firebaseConfig);
@@ -37,70 +88,81 @@
 </head>
 <body>
 
-<h2>Registro de Zapatos</h2>
+<header>
+    <img src="URL_DE_TU_IMAGEN" alt="Logo">
+    <h1>Zapatería CRUD con Firebase</h1>
+</header>
 
-<form id="shoeForm">
-    <label for="marca">Marca:</label>
-    <input type="text" id="marca" name="marca" required><br><br>
+<main>
+    <h2>Registro de Zapatos</h2>
 
-    <label for="talla">Talla:</label>
-    <input type="text" id="talla" name="talla" required><br><br>
+    <form id="shoeForm">
+        <label for="marca">Marca:</label>
+        <input type="text" id="marca" name="marca" required>
 
-    <label for="tipo">Tipo:</label>
-    <input type="text" id="tipo" name="tipo" required><br><br>
+        <label for="talla">Talla:</label>
+        <input type="text" id="talla" name="talla" required>
 
-    <label for="precio">Precio:</label>
-    <input type="number" id="precio" name="precio" required><br><br>
+        <label for="tipo">Tipo:</label>
+        <input type="text" id="tipo" name="tipo" required>
 
-    <label for="color">Color:</label>
-    <input type="text" id="color" name="color" required><br><br>
+        <label for="precio">Precio:</label>
+        <input type="number" id="precio" name="precio" required>
 
-    <label for="cantidad">Cantidad:</label>
-    <input type="number" id="cantidad" name="cantidad" required><br><br>
+        <label for="color">Color:</label>
+        <input type="text" id="color" name="color" required>
 
-    <label for="promocion">Promoción:</label>
-    <input type="text" id="promocion" name="promocion"><br><br>
+        <label for="cantidad">Cantidad:</label>
+        <input type="number" id="cantidad" name="cantidad" required>
 
-    <label for="imagen">Imagen URL:</label>
-    <input type="url" id="imagen" name="imagen"><br><br>
+        <label for="promocion">Promoción:</label>
+        <input type="text" id="promocion" name="promocion">
 
-    <label for="proveedor">Proveedor:</label>
-    <input type="text" id="proveedor" name="proveedor" required><br><br>
+        <label for="imagen">Imagen URL:</label>
+        <input type="url" id="imagen" name="imagen">
 
-    <label for="stock">Stock:</label>
-    <input type="number" id="stock" name="stock" required><br><br>
+        <label for="proveedor">Proveedor:</label>
+        <input type="text" id="proveedor" name="proveedor" required>
 
-    <button type="button" onclick="addShoe()">Registrar</button>
-    <button type="button" onclick="updateShoe()">Actualizar</button>
-    <button type="button" onclick="deleteShoe()">Eliminar</button>
-</form>
+        <label for="stock">Stock:</label>
+        <input type="number" id="stock" name="stock" required>
 
-<h2>Listado de Zapatos</h2>
+        <button type="button" onclick="addShoe()">Registrar</button>
+        <button type="button" onclick="updateShoe()">Actualizar</button>
+        <button type="button" onclick="deleteShoe()">Eliminar</button>
+    </form>
 
-<table id="shoeTable">
-    <thead>
-        <tr>
-            <th>Marca</th>
-            <th>Talla</th>
-            <th>Tipo</th>
-            <th>Precio</th>
-            <th>Color</th>
-            <th>Cantidad</th>
-            <th>Promoción</th>
-            <th>Imagen</th>
-            <th>Proveedor</th>
-            <th>Stock</th>
-        </tr>
-    </thead>
-    <tbody id="shoeTableBody">
-        <!-- Rows will be added here dynamically -->
-    </tbody>
-</table>
+    <h2>Listado de Zapatos</h2>
+
+    <table id="shoeTable">
+        <thead>
+            <tr>
+                <th>Marca</th>
+                <th>Talla</th>
+                <th>Tipo</th>
+                <th>Precio</th>
+                <th>Color</th>
+                <th>Cantidad</th>
+                <th>Promoción</th>
+                <th>Imagen</th>
+                <th>Proveedor</th>
+                <th>Stock</th>
+            </tr>
+        </thead>
+        <tbody id="shoeTableBody">
+            <!-- Filas se añadirán dinámicamente -->
+        </tbody>
+    </table>
+</main>
+
+<footer>
+    <p>&copy; 2024 Zapatería</p>
+</footer>
 
 <script>
     let shoes = [];
     let currentIndex = null;
-    const dbCollection = db.collection("zapatos");
+    const dbCollection = db.collection("Zapatos123");
 
     async function addShoe() {
         const shoeForm = document.forms.shoeForm;
@@ -138,7 +200,6 @@
                     if (key === 'imagen') {
                         const img = document.createElement('img');
                         img.src = shoe[key];
-                        img.width = 50;
                         cell.appendChild(img);
                     } else {
                         cell.innerText = shoe[key];
@@ -198,7 +259,7 @@
         currentIndex = null;
     }
 
-    // Load shoes on page load
+    // Cargar zapatos al cargar la página
     loadShoes();
 </script>
 
