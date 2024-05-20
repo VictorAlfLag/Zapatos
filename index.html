@@ -81,7 +81,7 @@
          messagingSenderId: "697116944046",
          appId: "1:697116944046:web:2c07f68a503be92a29af3f",
          measurementId: "G-9G00D9ESGX"
-};
+        };
         // Inicializar Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
@@ -89,8 +89,8 @@
 </head>
 <body>
 <header>
-    <img src=https://seeklogo.com/images/M/marathon-sports-logo-FFFFC11CFB-seeklogo.com.png alt="Logo">
-    <h1>Zapatería </h1>
+    <img src="https://seeklogo.com/images/M/marathon-sports-logo-FFFFC11CFB-seeklogo.com.png" alt="Logo">
+    <h1>Zapatería</h1>
 </header>
 <main>
     <h2>Registro de Zapatos</h2>
@@ -127,8 +127,6 @@
         <input type="number" id="stock" name="stock" required><br><br>
     
         <button type="button" onclick="addShoe()">Guardar</button>
-        <button type="button" onclick="updateShoe()">Editar</button>
-        <button type="button" onclick="deleteShoe()">Eliminar</button>
     </form>
     <h2>Listado de Zapatos</h2>
     <table id="shoeTable">
@@ -144,6 +142,7 @@
                 <th>Imagen</th>
                 <th>Proveedor</th>
                 <th>Stock</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody id="shoeTableBody">
@@ -155,6 +154,7 @@
     let shoes = [];
     let currentIndex = null;
     const dbCollection = db.collection("Zapatos123");
+
     async function addShoe() {
         const shoeForm = document.forms.shoeForm;
         const newShoe = {
@@ -173,40 +173,55 @@
         loadShoes();
         shoeForm.reset();
     }
+
     async function loadShoes() {
         const snapshot = await dbCollection.get();
         shoes = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
         renderTable();
     }
+
     function renderTable() {
-    const tableBody = document.getElementById('shoeTableBody');
-    tableBody.innerHTML = '';
+        const tableBody = document.getElementById('shoeTableBody');
+        tableBody.innerHTML = '';
 
-    shoes.forEach((shoe, index) => {
-        const row = document.createElement('tr');
+        shoes.forEach((shoe, index) => {
+            const row = document.createElement('tr');
 
-        // Crear celdas para cada propiedad del zapato
-        const properties = ['marca', 'talla', 'tipo', 'precio', 'color', 'cantidad', 'promocion', 'imagen', 'proveedor', 'stock'];
-        properties.forEach(property => {
-            const cell = document.createElement('td');
-            if (property === 'imagen') {
-                const img = document.createElement('img');
-                img.src = shoe[property];
-                img.style.maxWidth = '50px';
-                cell.appendChild(img);
-            } else {
-                cell.innerText = shoe[property];
-            }
-            row.appendChild(cell);
+            // Crear celdas para cada propiedad del zapato
+            const properties = ['marca', 'talla', 'tipo', 'precio', 'color', 'cantidad', 'promocion', 'imagen', 'proveedor', 'stock'];
+            properties.forEach(property => {
+                const cell = document.createElement('td');
+                if (property === 'imagen') {
+                    const img = document.createElement('img');
+                    img.src = shoe[property];
+                    img.style.maxWidth = '50px';
+                    cell.appendChild(img);
+                } else {
+                    cell.innerText = shoe[property];
+                }
+                row.appendChild(cell);
+            });
+
+            // Crear celda para los botones de editar y eliminar
+            const actionsCell = document.createElement('td');
+
+            const editButton = document.createElement('button');
+            editButton.innerText = 'Editar';
+            editButton.onclick = () => loadForm(index);
+            actionsCell.appendChild(editButton);
+
+            const deleteButton = document.createElement('button');
+            deleteButton.innerText = 'Eliminar';
+            deleteButton.onclick = () => deleteShoe(index);
+            actionsCell.appendChild(deleteButton);
+
+            row.appendChild(actionsCell);
+
+            // Agregar la fila a la tabla
+            tableBody.appendChild(row);
         });
+    }
 
-        // Agregar evento clic a la fila para cargar los datos en el formulario
-        row.addEventListener('click', () => loadForm(index));
-
-        // Agregar la fila a la tabla
-        tableBody.appendChild(row);
-    });
-}
     function loadForm(index) {
         const shoe = shoes[index];
         const shoeForm = document.forms.shoeForm;
@@ -222,6 +237,7 @@
         shoeForm.stock.value = shoe.stock;
         currentIndex = index;
     }
+
     async function updateShoe() {
         if (currentIndex === null) return;
         const shoeForm = document.forms.shoeForm;
@@ -243,14 +259,15 @@
         shoeForm.reset();
         currentIndex = null;
     }
-    async function deleteShoe() {
-        if (currentIndex === null) return;
-        const id = shoes[currentIndex].id;
+
+    async function deleteShoe(index) {
+        const id = shoes[index].id;
         await dbCollection.doc(id).delete();
         loadShoes();
         document.forms.shoeForm.reset();
         currentIndex = null;
     }
+
     // Cargar zapatos al cargar la página
     loadShoes();
 </script>
