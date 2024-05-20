@@ -94,39 +94,40 @@
 </header>
 <main>
     <h2>Registro de Zapatos</h2>
+
     <form id="shoeForm">
         <label for="marca">Marca:</label>
-        <input type="text" id="marca" name="marca" required>
-
+        <input type="text" id="marca" name="marca" required><br><br>
+    
         <label for="talla">Talla:</label>
-        <input type="text" id="talla" name="talla" required>
-
+        <input type="text" id="talla" name="talla" required><br><br>
+    
         <label for="tipo">Tipo:</label>
-        <input type="text" id="tipo" name="tipo" required>
-
+        <input type="text" id="tipo" name="tipo" required><br><br>
+    
         <label for="precio">Precio:</label>
-        <input type="number" id="precio" name="precio" required>
-
+        <input type="number" id="precio" name="precio" required><br><br>
+    
         <label for="color">Color:</label>
-        <input type="text" id="color" name="color" required>
-
+        <input type="text" id="color" name="color" required><br><br>
+    
         <label for="cantidad">Cantidad:</label>
-        <input type="number" id="cantidad" name="cantidad" required>
-
+        <input type="number" id="cantidad" name="cantidad" required><br><br>
+    
         <label for="promocion">Promoción:</label>
-        <input type="text" id="promocion" name="promocion">
-
+        <input type="text" id="promocion" name="promocion"><br><br>
+    
         <label for="imagen">Imagen URL:</label>
-        <input type="url" id="imagen" name="imagen">
-
+        <input type="url" id="imagen" name="imagen"><br><br>
+    
         <label for="proveedor">Proveedor:</label>
-        <input type="text" id="proveedor" name="proveedor" required>
-
+        <input type="text" id="proveedor" name="proveedor" required><br><br>
+    
         <label for="stock">Stock:</label>
-        <input type="number" id="stock" name="stock" required>
-
-        <button type="button" onclick="addShoe()">Guardar</button>
-        <button type="button" onclick="updateShoe()">Editar</button>
+        <input type="number" id="stock" name="stock" required><br><br>
+    
+        <button type="button" onclick="addShoe()">Registrar</button>
+        <button type="button" onclick="updateShoe()">Actualizar</button>
         <button type="button" onclick="deleteShoe()">Eliminar</button>
     </form>
     <h2>Listado de Zapatos</h2>
@@ -149,7 +150,6 @@
             <!-- Filas se añadirán dinámicamente -->
         </tbody>
     </table>
-</main>
 <script>
     let shoes = [];
     let currentIndex = null;
@@ -247,6 +247,7 @@
     loadShoes();
 </script>
 </body>
+</main>
 <footer>
     <p>&copy; 2024 Zapatería Ing Victor Chiguano</p>
 </footer>
