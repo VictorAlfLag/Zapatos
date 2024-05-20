@@ -179,27 +179,34 @@
         renderTable();
     }
     function renderTable() {
-        const tableBody = document.getElementById('shoeTableBody');
-        tableBody.innerHTML = '';
-        shoes.forEach((shoe, index) => {
-            const row = document.createElement('tr');
-            for (const key in shoe) {
-                if (key !== 'id') {
-                    const cell = document.createElement('td');
-                    if (key === 'imagen') {
-                        const img = document.createElement('img');
-                        img.src = shoe[key];
-                        cell.appendChild(img);
-                    } else {
-                        cell.innerText = shoe[key];
-                    }
-                    row.appendChild(cell);
-                }
+    const tableBody = document.getElementById('shoeTableBody');
+    tableBody.innerHTML = '';
+
+    shoes.forEach((shoe, index) => {
+        const row = document.createElement('tr');
+
+        // Crear celdas para cada propiedad del zapato
+        const properties = ['marca', 'talla', 'tipo', 'precio', 'color', 'cantidad', 'promocion', 'imagen', 'proveedor', 'stock'];
+        properties.forEach(property => {
+            const cell = document.createElement('td');
+            if (property === 'imagen') {
+                const img = document.createElement('img');
+                img.src = shoe[property];
+                img.style.maxWidth = '50px';
+                cell.appendChild(img);
+            } else {
+                cell.innerText = shoe[property];
             }
-            row.addEventListener('click', () => loadForm(index));
-            tableBody.appendChild(row);
+            row.appendChild(cell);
         });
-    }
+
+        // Agregar evento clic a la fila para cargar los datos en el formulario
+        row.addEventListener('click', () => loadForm(index));
+
+        // Agregar la fila a la tabla
+        tableBody.appendChild(row);
+    });
+}
     function loadForm(index) {
         const shoe = shoes[index];
         const shoeForm = document.forms.shoeForm;
