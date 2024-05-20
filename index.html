@@ -15,7 +15,7 @@
             justify-content: center;
         }
         header, footer {
-            background-color: #007BFF;
+            background-color: #011d3b;
             color: white;
             text-align: center;
             padding: 10px 0;
@@ -154,16 +154,10 @@
         </tbody>
     </table>
 </main>
-
-<footer>
-    <p>&copy; 2024 Zapatería</p>
-</footer>
-
 <script>
     let shoes = [];
     let currentIndex = null;
     const dbCollection = db.collection("Zapatos123");
-
     async function addShoe() {
         const shoeForm = document.forms.shoeForm;
         const newShoe = {
@@ -182,13 +176,11 @@
         loadShoes();
         shoeForm.reset();
     }
-
     async function loadShoes() {
         const snapshot = await dbCollection.get();
         shoes = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
         renderTable();
     }
-
     function renderTable() {
         const tableBody = document.getElementById('shoeTableBody');
         tableBody.innerHTML = '';
@@ -211,7 +203,6 @@
             tableBody.appendChild(row);
         });
     }
-
     function loadForm(index) {
         const shoe = shoes[index];
         const shoeForm = document.forms.shoeForm;
@@ -227,7 +218,6 @@
         shoeForm.stock.value = shoe.stock;
         currentIndex = index;
     }
-
     async function updateShoe() {
         if (currentIndex === null) return;
         const shoeForm = document.forms.shoeForm;
@@ -249,7 +239,6 @@
         shoeForm.reset();
         currentIndex = null;
     }
-
     async function deleteShoe() {
         if (currentIndex === null) return;
         const id = shoes[currentIndex].id;
@@ -258,10 +247,11 @@
         document.forms.shoeForm.reset();
         currentIndex = null;
     }
-
     // Cargar zapatos al cargar la página
     loadShoes();
 </script>
-
+<footer>
+    <p>&copy; 2024 Zapatería Ing Victor Chiguano</p>
+</footer>
 </body>
 </html>
