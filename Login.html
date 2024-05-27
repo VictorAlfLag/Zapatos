@@ -5,71 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login y Registro</title>
   <style>
-    body, html {
-      height: 100%;
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-    }
-    .bg {
-      background-image: url('tu-imagen-de-fondo.jpg');
-      height: 100%;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: cover;
-      position: relative;
-    }
-    .container {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      padding: 20px;
-      background: rgba(255, 255, 255, 0.8);
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    .container h2 {
-      text-align: center;
-      color: #333;
-    }
-    .form-group {
-      position: relative;
-      margin-bottom: 20px;
-    }
-    .form-group input {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      background: none;
-    }
-    .form-group label {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      pointer-events: none;
-      transition: 0.2s;
-      color: #999;
-    }
-    .form-group input:focus ~ label,
-    .form-group input:not(:placeholder-shown) ~ label {
-      top: -15px;
-      left: 10px;
-      font-size: 12px;
-      color: #333;
-    }
-    .btn {
-      width: 100%;
-      padding: 10px;
-      background-color: #5cb85c;
-      border: none;
-      border-radius: 5px;
-      color: white;
-      cursor: pointer;
-    }
-    .btn:hover {
-      background-color: #4cae4c;
-    }
+    /* Aquí irán los estilos */
   </style>
 </head>
 <body>
@@ -107,25 +43,25 @@
   <script src="https://www.gstatic.com/firebasejs/9.9.3/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.9.3/firebase-auth-compat.js"></script>
   <script>
-    // Firebase configuration
+    // Configuración de Firebase
     const firebaseConfig = {
-      apiKey: "AIzaSyDo3NfinUt7wehuE5pOnYC51Z8iObdiBl4",
-      authDomain: "zapateria-b222f.firebaseapp.com",
-      projectId: "zapateria-b222f",
-      storageBucket: "zapateria-b222f.appspot.com",
-      messagingSenderId: "697116944046",
-      appId: "1:697116944046:web:2c07f68a503be92a29af3f",
-      measurementId: "G-9G00D9ESGX"
+      apiKey: "tu-api-key",
+      authDomain: "tu-auth-domain",
+      projectId: "tu-project-id",
+      storageBucket: "tu-storage-bucket",
+      messagingSenderId: "tu-messaging-sender-id",
+      appId: "tu-app-id",
+      measurementId: "tu-measurement-id"
     };
-    // Initialize Firebase
+    // Inicializar Firebase
     firebase.initializeApp(firebaseConfig);
 
+    // Iniciar sesión
     function login() {
       const email = document.getElementById('login-email').value;
       const password = document.getElementById('login-password').value;
-
       firebase.auth().signInWithEmailAndPassword(email, password)
-        .then((userCredential) => {
+        .then(() => {
           window.location.href = 'index.html';
         })
         .catch((error) => {
@@ -133,12 +69,12 @@
         });
     }
 
+    // Registrarse
     function register() {
       const email = document.getElementById('register-email').value;
       const password = document.getElementById('register-password').value;
-
       firebase.auth().createUserWithEmailAndPassword(email, password)
-        .then((userCredential) => {
+        .then(() => {
           window.location.href = 'index.html';
         })
         .catch((error) => {
@@ -146,6 +82,7 @@
         });
     }
 
+    // Mostrar formularios
     function showLogin() {
       document.getElementById('login-container').style.display = 'block';
       document.getElementById('register-container').style.display = 'none';
