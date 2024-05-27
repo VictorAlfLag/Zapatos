@@ -70,6 +70,7 @@
     </style>
     <!-- Incluir Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.9.3/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.9.3/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.9.3/firebase-firestore-compat.js"></script>
     <script>
         // Configuración de Firebase
@@ -84,13 +85,28 @@
         };
         // Inicializar Firebase
         firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
+
+        // Verificar el estado de autenticación
+        firebase.auth().onAuthStateChanged((user) => {
+          if (!user) {
+            window.location.href = 'login.html';
+          }
+        });
+
+        function logout() {
+          firebase.auth().signOut().then(() => {
+            window.location.href = 'login.html';
+          }).catch((error) => {
+            alert(error.message);
+          });
+        }
     </script>
 </head>
 <body>
 <header>
     <img src="https://seeklogo.com/images/M/marathon-sports-logo-FFFFC11CFB-seeklogo.com.png" alt="Logo">
     <h1>Zapatería</h1>
+    <button onclick="logout()">Cerrar Sesión</button>
 </header>
 <main>
     <h2>Registro de Zapatos</h2>
@@ -153,6 +169,7 @@
 <script>
     let shoes = [];
     let currentIndex = null;
+    const db = firebase.firestore();
     const dbCollection = db.collection("Zapatos123");
 
     async function saveShoe() {
