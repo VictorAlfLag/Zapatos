@@ -1,280 +1,204 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zapatería CRUD con Firebase</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        header, footer {
-            background-color: #011d3b;
-            color: white;
-            text-align: center;
-            padding: 10px 0;
-            width: 100%;
-        }
-        header img {
-            max-width: 50px;
-            vertical-align: middle;
-        }
-        header h1 {
-            display: inline;
-            margin-left: 10px;
-        }
-        footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-        main {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 80%;
-            max-width: 800px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        table, th, td {
-            border: 1px solid black;
-        }
-        th, td {
-            padding: 8px;
-            text-align: left;
-        }
-        img {
-            width: 50px;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-        }
-        form label, form input, form button {
-            margin: 5px 0;
-        }
-        form button {
-            align-self: center;
-        }
-    </style>
-    <!-- Incluir Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/9.9.3/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.9.3/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.9.3/firebase-firestore-compat.js"></script>
-    <script>
-        // Configuración de Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyDo3NfinUt7wehuE5pOnYC51Z8iObdiBl4",
-            authDomain: "zapateria-b222f.firebaseapp.com",
-            projectId: "zapateria-b222f",
-            storageBucket: "zapateria-b222f.appspot.com",
-            messagingSenderId: "697116944046",
-            appId: "1:697116944046:web:2c07f68a503be92a29af3f",
-            measurementId: "G-9G00D9ESGX"
-        };
-        // Inicializar Firebase
-        firebase.initializeApp(firebaseConfig);
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zapatería CRUD con Firebase</title>
+  <style>
+    /* Aquí irán los estilos */
+  </style>
+  <!-- Incluir Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.9.3/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.9.3/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.9.3/firebase-firestore-compat.js"></script>
+  <script>
+    // Configuración de Firebase
+    const firebaseConfig = {
+      apiKey: "tu-api-key",
+      authDomain: "tu-auth-domain",
+      projectId: "tu-project-id",
+      storageBucket: "tu-storage-bucket",
+      messagingSenderId: "tu-messaging-sender-id",
+      appId: "tu-app-id",
+      measurementId: "tu-measurement-id"
+    };
+    // Inicializar Firebase
+    firebase.initializeApp(firebaseConfig);
 
-        // Verificar el estado de autenticación
-        firebase.auth().onAuthStateChanged((user) => {
-          if (!user) {
-            window.location.href = 'login.html';
-          }
-        });
+    // Verificar el estado de autenticación
+    firebase.auth().onAuthStateChanged((user) => {
+      if (!user) {
+        window.location.href = 'login.html';
+      }
+    });
 
-        function logout() {
-          firebase.auth().signOut().then(() => {
-            window.location.href = 'login.html';
-          }).catch((error) => {
-            alert(error.message);
-          });
-        }
-    </script>
+    function logout() {
+      firebase.auth().signOut().then(() => {
+        window.location.href = 'login.html';
+      }).catch((error) => {
+        alert(error.message);
+      });
+    }
+  </script>
 </head>
 <body>
 <header>
-    <img src="https://seeklogo.com/images/M/marathon-sports-logo-FFFFC11CFB-seeklogo.com.png" alt="Logo">
-    <h1>Zapatería</h1>
-    <button onclick="logout()">Cerrar Sesión</button>
+  <img src="https://seeklogo.com/images/M/marathon-sports-logo-FFFFC11CFB-seeklogo.com.png" alt="Logo">
+  <h1>Zapatería</h1>
+  <button onclick="logout()">Cerrar Sesión</button>
 </header>
 <main>
-    <h2>Registro de Zapatos</h2>
+  <h2>Registro de Zapatos</h2>
 
-    <form id="shoeForm">
-        <label for="marca">Marca:</label>
-        <input type="text" id="marca" name="marca" required><br><br>
+  <form id="shoeForm">
+    <label for="marca">Marca:</label>
+    <input type="text" id="marca" name="marca" required><br><br>
 
-        <label for="talla">Talla:</label>
-        <input type="text" id="talla" name="talla" required><br><br>
+    <label for="talla">Talla:</label>
+    <input type="text" id="talla" name="talla" required><br><br>
 
-        <label for="tipo">Tipo:</label>
-        <input type="text" id="tipo" name="tipo" required><br><br>
+    <label for="tipo">Tipo:</label>
+    <input type="text" id="tipo" name="tipo" required><br><br>
 
-        <label for="precio">Precio:</label>
-        <input type="number" id="precio" name="precio" required><br><br>
+    <label for="precio">Precio:</label>
+    <input type="number" id="precio" name="precio" required><br><br>
 
-        <label for="color">Color:</label>
-        <input type="text" id="color" name="color" required><br><br>
+    <label for="color">Color:</label>
+    <input type="text" id="color" name="color" required><br><br>
 
-        <label for="cantidad">Cantidad:</label>
-        <input type="number" id="cantidad" name="cantidad" required><br><br>
+    <label for="cantidad">Cantidad:</label>
+    <input type="number" id="cantidad" name="cantidad" required><br><br>
 
-        <label for="promocion">Promoción:</label>
-        <input type="text" id="promocion" name="promocion"><br><br>
+    <label for="promocion">Promoción:</label>
+    <input type="text" id="promocion" name="promocion"><br><br>
 
-        <label for="imagen">Imagen URL:</label>
-        <input type="url" id="imagen" name="imagen"><br><br>
+    <label for="imagen">Imagen URL:</label>
+    <input type="url" id="imagen" name="imagen"><br><br>
 
-        <label for="proveedor">Proveedor:</label>
-        <input type="text" id="proveedor" name="proveedor" required><br><br>
+    <label for="proveedor">Proveedor:</label>
+    <input type="text" id="proveedor" name="proveedor" required><br><br>
 
-        <label for="stock">Stock:</label>
-        <input type="number" id="stock" name="stock" required><br><br>
+    <label for="stock">Stock:</label>
+    <input type="number" id="stock" name="stock" required><br><br>
 
-        <button type="button" onclick="saveShoe()">Guardar</button>
-    </form>
-    <h2>Listado de Zapatos</h2>
-    <table id="shoeTable">
-        <thead>
-            <tr>
-                <th>Marca</th>
-                <th>Talla</th>
-                <th>Tipo</th>
-                <th>Precio</th>
-                <th>Color</th>
-                <th>Cantidad</th>
-                <th>Promoción</th>
-                <th>Imagen</th>
-                <th>Proveedor</th>
-                <th>Stock</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody id="shoeTableBody">
-            <!-- Filas se añadirán dinámicamente -->
-        </tbody>
-    </table>
+    <button type="button" onclick="saveShoe()">Guardar</button>
+  </form>
+  <h2>Listado de Zapatos</h2>
+  <table id="shoeTable">
+    <thead>
+      <tr>
+        <th>Marca</th>
+        <th>Talla</th>
+        <th>Tipo</th>
+        <th>Precio</th>
+        <th>Color</th>
+        <th>Cantidad</th>
+        <th>Promoción</th>
+        <th>Imagen</th>
+        <th>Proveedor</th>
+        <th>Stock</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody id="shoeTableBody">
+      <!-- Filas se añadirán dinámicamente -->
+    </tbody>
+  </table>
 </main>
 <script>
-    let shoes = [];
-    let currentIndex = null;
-    const db = firebase.firestore();
-    const dbCollection = db.collection("Zapatos123");
+  let shoes = [];
+  let currentIndex = null;
+  const db = firebase.firestore();
+  const dbCollection = db.collection("Zapatos123");
 
-    async function saveShoe() {
-        const shoeForm = document.forms.shoeForm;
-        const newShoe = {
-            marca: shoeForm.marca.value,
-            talla: shoeForm.talla.value,
-            tipo: shoeForm.tipo.value,
-            precio: shoeForm.precio.value,
-            color: shoeForm.color.value,
-            cantidad: shoeForm.cantidad.value,
-            promocion: shoeForm.promocion.value,
-            imagen: shoeForm.imagen.value,
-            proveedor: shoeForm.proveedor.value,
-            stock: shoeForm.stock.value
-        };
+  async function saveShoe() {
+    const shoeForm = document.forms.shoeForm;
+    const newShoe = {
+      marca: shoeForm.marca.value,
+      talla: shoeForm.talla.value,
+      tipo: shoeForm.tipo.value,
+      precio: shoeForm.precio.value,
+      color: shoeForm.color.value,
+      cantidad: shoeForm.cantidad.value,
+      promocion: shoeForm.promocion.value,
+      imagen: shoeForm.imagen.value,
+      proveedor: shoeForm.proveedor.value,
+      stock: shoeForm.stock.value,
+    };
 
-        if (currentIndex === null) {
-            // Crear un nuevo zapato
-            await dbCollection.add(newShoe);
-        } else {
-            // Actualizar zapato existente
-            const id = shoes[currentIndex].id;
-            await dbCollection.doc(id).update(newShoe);
-        }
-
-        loadShoes();
-        shoeForm.reset();
+    try {
+      if (currentIndex === null) {
+        await dbCollection.add(newShoe);
+      } else {
+        const doc = shoes[currentIndex];
+        await dbCollection.doc(doc.id).update(newShoe);
         currentIndex = null;
+      }
+      shoeForm.reset();
+      loadShoes();
+    } catch (error) {
+      alert(error.message);
     }
+  }
 
-    async function loadShoes() {
-        const snapshot = await dbCollection.get();
-        shoes = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
-        renderTable();
+  async function loadShoes() {
+    try {
+      const snapshot = await dbCollection.get();
+      shoes = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      const tbody = document.getElementById('shoeTableBody');
+      tbody.innerHTML = '';
+      shoes.forEach((shoe, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${shoe.marca}</td>
+          <td>${shoe.talla}</td>
+          <td>${shoe.tipo}</td>
+          <td>${shoe.precio}</td>
+          <td>${shoe.color}</td>
+          <td>${shoe.cantidad}</td>
+          <td>${shoe.promocion}</td>
+          <td><img src="${shoe.imagen}" alt="${shoe.marca}" style="width:50px;height:50px;"></td>
+          <td>${shoe.proveedor}</td>
+          <td>${shoe.stock}</td>
+          <td>
+            <button onclick="editShoe(${index})">Editar</button>
+            <button onclick="deleteShoe(${index})">Eliminar</button>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+    } catch (error) {
+      alert(error.message);
     }
+  }
 
-    function renderTable() {
-        const tableBody = document.getElementById('shoeTableBody');
-        tableBody.innerHTML = '';
+  async function editShoe(index) {
+    currentIndex = index;
+    const shoe = shoes[index];
+    const shoeForm = document.forms.shoeForm;
+    shoeForm.marca.value = shoe.marca;
+    shoeForm.talla.value = shoe.talla;
+    shoeForm.tipo.value = shoe.tipo;
+    shoeForm.precio.value = shoe.precio;
+    shoeForm.color.value = shoe.color;
+    shoeForm.cantidad.value = shoe.cantidad;
+    shoeForm.promocion.value = shoe.promocion;
+    shoeForm.imagen.value = shoe.imagen;
+    shoeForm.proveedor.value = shoe.proveedor;
+    shoeForm.stock.value = shoe.stock;
+  }
 
-        shoes.forEach((shoe, index) => {
-            const row = document.createElement('tr');
-
-            // Crear celdas para cada propiedad del zapato
-            const properties = ['marca', 'talla', 'tipo', 'precio', 'color', 'cantidad', 'promocion', 'imagen', 'proveedor', 'stock'];
-            properties.forEach(property => {
-                const cell = document.createElement('td');
-                if (property === 'imagen') {
-                    const img = document.createElement('img');
-                    img.src = shoe[property];
-                    img.style.maxWidth = '50px';
-                    cell.appendChild(img);
-                } else {
-                    cell.innerText = shoe[property];
-                }
-                row.appendChild(cell);
-            });
-
-            // Crear celda para los botones de editar y eliminar
-            const actionsCell = document.createElement('td');
-
-            const editButton = document.createElement('button');
-            editButton.innerText = 'Editar';
-            editButton.onclick = () => loadForm(index);
-            actionsCell.appendChild(editButton);
-
-            const deleteButton = document.createElement('button');
-            deleteButton.innerText = 'Eliminar';
-            deleteButton.onclick = () => deleteShoe(index);
-            actionsCell.appendChild(deleteButton);
-
-            row.appendChild(actionsCell);
-
-            // Agregar la fila a la tabla
-            tableBody.appendChild(row);
-        });
+  async function deleteShoe(index) {
+    try {
+      const doc = shoes[index];
+      await dbCollection.doc(doc.id).delete();
+      loadShoes();
+    } catch (error) {
+      alert(error.message);
     }
+  }
 
-    function loadForm(index) {
-        const shoe = shoes[index];
-        const shoeForm = document.forms.shoeForm;
-        shoeForm.marca.value = shoe.marca;
-        shoeForm.talla.value = shoe.talla;
-        shoeForm.tipo.value = shoe.tipo;
-        shoeForm.precio.value = shoe.precio;
-        shoeForm.color.value = shoe.color;
-        shoeForm.cantidad.value = shoe.cantidad;
-        shoeForm.promocion.value = shoe.promocion;
-        shoeForm.imagen.value = shoe.imagen;
-        shoeForm.proveedor.value = shoe.proveedor;
-        shoeForm.stock.value = shoe.stock;
-        currentIndex = index;
-    }
-
-    async function deleteShoe(index) {
-        const id = shoes[index].id;
-        await dbCollection.doc(id).delete();
-        loadShoes();
-        document.forms.shoeForm.reset();
-        currentIndex = null;
-    }
-
-    // Cargar zapatos al cargar la página
-    loadShoes();
+  loadShoes();
 </script>
 </body>
 </html>

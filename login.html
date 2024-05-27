@@ -5,38 +5,89 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login y Registro</title>
   <style>
-    /* Aquí irán los estilos */
+    /* Estilos CSS para centrar el contenido y el fondo */
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-image: url('tu-imagen-de-fondo.jpg');
+      background-size: cover;
+    }
+    .container {
+      background-color: rgba(255, 255, 255, 0.8);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+    .form-group {
+      position: relative;
+      margin-bottom: 15px;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+    .form-group label {
+      position: absolute;
+      top: 50%;
+      left: 10px;
+      transform: translateY(-50%);
+      transition: top 0.2s, transform 0.2s;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+    .form-group input:focus + label,
+    .form-group input:not(:placeholder-shown) + label {
+      top: 0;
+      transform: translateY(-100%);
+      opacity: 1;
+    }
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background-color: #011d3b;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background-color: #013a74;
+    }
   </style>
 </head>
 <body>
-  <div class="bg">
-    <div class="container" id="login-container">
-      <h2>Iniciar Sesión</h2>
-      <div class="form-group">
-        <input type="email" id="login-email" required placeholder=" ">
-        <label for="login-email">Correo Electrónico</label>
-      </div>
-      <div class="form-group">
-        <input type="password" id="login-password" required placeholder=" ">
-        <label for="login-password">Contraseña</label>
-      </div>
-      <button class="btn" onclick="login()">Iniciar Sesión</button>
-      <p>¿No tienes una cuenta? <a href="#" onclick="showRegister()">Regístrate</a></p>
+  <div class="container" id="login-container">
+    <h2>Iniciar Sesión</h2>
+    <div class="form-group">
+      <input type="email" id="login-email" required placeholder=" ">
+      <label for="login-email">Correo Electrónico</label>
     </div>
+    <div class="form-group">
+      <input type="password" id="login-password" required placeholder=" ">
+      <label for="login-password">Contraseña</label>
+    </div>
+    <button class="btn" onclick="login()">Iniciar Sesión</button>
+    <p>¿No tienes una cuenta? <a href="#" onclick="showRegister()">Regístrate</a></p>
+  </div>
 
-    <div class="container" id="register-container" style="display: none;">
-      <h2>Registro</h2>
-      <div class="form-group">
-        <input type="email" id="register-email" required placeholder=" ">
-        <label for="register-email">Correo Electrónico</label>
-      </div>
-      <div class="form-group">
-        <input type="password" id="register-password" required placeholder=" ">
-        <label for="register-password">Contraseña</label>
-      </div>
-      <button class="btn" onclick="register()">Registrarse</button>
-      <p>¿Ya tienes una cuenta? <a href="#" onclick="showLogin()">Inicia Sesión</a></p>
+  <div class="container" id="register-container" style="display: none;">
+    <h2>Registro</h2>
+    <div class="form-group">
+      <input type="email" id="register-email" required placeholder=" ">
+      <label for="register-email">Correo Electrónico</label>
     </div>
+    <div class="form-group">
+      <input type="password" id="register-password" required placeholder=" ">
+      <label for="register-password">Contraseña</label>
+    </div>
+    <button class="btn" onclick="register()">Registrarse</button>
+    <p>¿Ya tienes una cuenta? <a href="#" onclick="showLogin()">Inicia Sesión</a></p>
   </div>
 
   <!-- Firebase SDK -->
