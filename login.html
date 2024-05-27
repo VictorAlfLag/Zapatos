@@ -1,163 +1,160 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login y Registro</title>
-  <style>
-    /* Estilos CSS para centrar el contenido y el fondo */
-    body {
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background-image: url('https://wallpaper.forfun.com/fetch/1f/1fb979678947a87f8ebe8b9ca63e248e.jpeg');
-      background-size: cover;
-    }
-    .container {
-      background-color: rgba(255, 255, 255, 0.8);
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    }
-    .form-group {
-      position: relative;
-      margin-bottom: 15px;
-    }
-    .form-group input {
-      width: 100%;
-      padding: 10px;
-      box-sizing: border-box;
-    }
-    .form-group label {
-      position: absolute;
-      top: 50%;
-      left: 10px;
-      transform: translateY(-50%);
-      transition: top 0.2s, transform 0.2s;
-      pointer-events: none;
-      opacity: 0.5;
-    }
-    .form-group input:focus + label,
-    .form-group input:not(:placeholder-shown) + label {
-      top: 0;
-      transform: translateY(-100%);
-      opacity: 1;
-    }
-    .btn {
-      display: block;
-      width: 100%;
-      padding: 10px;
-      background-color: #011d3b;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .btn:hover {
-      background-color: #013a74;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login y Registro</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url('tu-imagen-de-fondo.jpg');
+            background-size: cover;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        .form-group {
+            position: relative;
+            margin-bottom: 15px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .form-group label {
+            position: absolute;
+            top: 50%;
+            left: 10px;
+            transform: translateY(-50%);
+            transition: top 0.2s, transform 0.2s;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+        .form-group input:focus + label,
+        .form-group input:not(:placeholder-shown) + label {
+            top: 0;
+            transform: translateY(-100%);
+            opacity: 1;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #011d3b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #013a74;
+        }
+    </style>
 </head>
 <body>
-  <div class="container" id="login-container">
-    <h2>Iniciar Sesión</h2>
-    <div class="form-group">
-      <input type="email" id="login-email" required placeholder=" ">
-      <label for="login-email">Correo Electrónico</label>
+    <div class="container" id="login-container">
+        <h2>Iniciar Sesión</h2>
+        <div class="form-group">
+            <input type="email" id="login-email" required placeholder=" ">
+            <label for="login-email">Correo Electrónico</label>
+        </div>
+        <div class="form-group">
+            <input type="password" id="login-password" required placeholder=" ">
+            <label for="login-password">Contraseña</label>
+        </div>
+        <button class="btn" onclick="loginWithEmail()">Iniciar Sesión con Correo</button>
+        <button class="btn" onclick="loginWithGoogle()">Iniciar Sesión con Google</button>
+        <p>¿No tienes una cuenta? <a href="#" onclick="showRegister()">Regístrate</a></p>
     </div>
-    <div class="form-group">
-      <input type="password" id="login-password" required placeholder=" ">
-      <label for="login-password">Contraseña</label>
+
+    <div class="container" id="register-container" style="display: none;">
+        <h2>Registro</h2>
+        <div class="form-group">
+            <input type="email" id="register-email" required placeholder=" ">
+            <label for="register-email">Correo Electrónico</label>
+        </div>
+        <div class="form-group">
+            <input type="password" id="register-password" required placeholder=" ">
+            <label for="register-password">Contraseña</label>
+        </div>
+        <button class="btn" onclick="register()">Registrarse</button>
+        <p>¿Ya tienes una cuenta? <a href="#" onclick="showLogin()">Inicia Sesión</a></p>
     </div>
-    <button class="btn" onclick="login()">Iniciar Sesión</button>
-    <button class="btn" onclick="signInWithGoogle()">Iniciar Sesión con Google</button>
-    <p>¿No tienes una cuenta? <a href="#" onclick="showRegister()">Regístrate</a></p>
-  </div>
 
-  <div class="container" id="register-container" style="display: none;">
-    <h2>Registro</h2>
-    <div class="form-group">
-      <input type="email" id="register-email" required placeholder=" ">
-      <label for="register-email">Correo Electrónico</label>
-    </div>
-    <div class="form-group">
-      <input type="password" id="register-password" required placeholder=" ">
-      <label for="register-password">Contraseña</label>
-    </div>
-    <button class="btn" onclick="register()">Registrarse</button>
-    <button class="btn" onclick="registerWithGoogle()">Registrarse con Google</button>
-    <p>¿Ya tienes una cuenta? <a href="#" onclick="showLogin()">Inicia Sesión</a></p>
-  </div>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.9.3/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.9.3/firebase-auth-compat.js"></script>
+    <script>
+        // Configuración de Firebase
+        const firebaseConfig = {
+            apiKey: "TU_API_KEY",
+            authDomain: "TU_AUTH_DOMAIN",
+            projectId: "TU_PROJECT_ID",
+            storageBucket: "TU_STORAGE_BUCKET",
+            messagingSenderId: "TU_MESSAGING_SENDER_ID",
+            appId: "TU_APP_ID",
+            measurementId: "TU_MEASUREMENT_ID"
+        };
+        // Inicializar Firebase
+        firebase.initializeApp(firebaseConfig);
 
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.9.3/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.9.3/firebase-auth.js"></script>
-  <script>
-    // Configuración de Firebase
-    const firebaseConfig = {
-      apiKey: "AIzaSyDo3NfinUt7wehuE5pOnYC51Z8iObdiBl4",
-      authDomain: "zapateria-b222f.firebaseapp.com",
-      projectId: "zapateria-b222f",
-      storageBucket: "zapateria-b222f.appspot.com",
-      messagingSenderId: "697116944046",
-      appId: "1:697116944046:web:2c07f68a503be92a29af3f",
-      measurementId: "G-9G00D9ESGX"
-    };
-    // Inicializar Firebase
-    firebase.initializeApp(firebaseConfig);
+        // Iniciar sesión con correo electrónico y contraseña
+        function loginWithEmail() {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            firebase.auth().signInWithEmailAndPassword(email, password)
+                .then(() => {
+                    window.location.href = 'index.html';
+                })
+                .catch((error) => {
+                    alert(error.message);
+                });
+        }
 
-    const auth = firebase.auth();
+        // Iniciar sesión con Google
+        function loginWithGoogle() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithPopup(provider)
+                .then((result) => {
+                    window.location.href = 'index.html';
+                })
+                .catch((error) => {
+                    alert(error.message);
+                });
+        }
 
-    // Iniciar sesión con Google
-    function signInWithGoogle() {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      auth.signInWithPopup(provider)
-        .then((result) => {
-          // This gives you a Google Access Token. You can use it to access the Google API.
-          const credential = result.credential;
-          // The signed-in user info.
-          const user = result.user;
-          // Redirect to desired page
-          window.location.href = 'index.html';
-        }).catch((error) => {
-          // Handle Errors here.
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          // The email of the user's account used.
-          const email = error.email;
-          // The firebase.auth.AuthCredential type that was used.
-          const credential = error.credential;
-          // ...
-        });
-    }
+        // Registrarse
+        function register() {
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            firebase.auth().createUserWithEmailAndPassword(email, password)
+                .then(() => {
+                    window.location.href = 'index.html';
+                })
+                .catch((error) => {
+                    alert(error.message);
+                });
+        }
 
-    // Registrarse con Google
-    function registerWithGoogle() {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      auth.signInWithPopup(provider)
-        .then((result) => {
-          // This gives you a Google Access Token. You can use it to access the Google API.
-          const credential = result.credential;
-          // The signed-in user info.
-          const user = result.user;
-          // Redirect to desired page
-          window.location.href = 'index.html';
-        }).catch((error) => {
-          // Handle Errors here.
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          // The email of the user's account used.
-          const email = error.email;
-          // The firebase.auth.AuthCredential type that was used.
-          const credential = error.credential;
-          // ...
-        });
-    }
+        // Mostrar formularios
+        function showLogin() {
+            document.getElementById('login-container').style.display = 'block';
+            document.getElementById('register-container').style.display = 'none';
+        }
 
-    // Resto del código para iniciar sesión, registrarse y mostrar formularios...
-  </script>
+        function showRegister() {
+            document.getElementById('login-container').style.display = 'none';
+            document.getElementById('register-container').style.display = 'block';
+        }
+    </script>
 </body>
 </html>
