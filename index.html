@@ -5,7 +5,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zapatería CRUD con Firebase</title>
     <style>
-        /* Aquí irán los estilos */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        header, footer {
+            background-color: #011d3b;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            width: 100%;
+        }
+        header img {
+            max-width: 50px;
+            vertical-align: middle;
+        }
+        header h1 {
+            display: inline;
+            margin-left: 10px;
+        }
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 80%;
+            max-width: 800px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        img {
+            width: 50px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+        form label, form input, form button {
+            margin: 5px 0;
+        }
+        form button {
+            align-self: center;
+        }
     </style>
     <!-- Incluir Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.9.3/firebase-app-compat.js"></script>
@@ -14,13 +75,13 @@
     <script>
         // Configuración de Firebase
         const firebaseConfig = {
-            apiKey: "tu-api-key",
-            authDomain: "tu-auth-domain",
-            projectId: "tu-project-id",
-            storageBucket: "tu-storage-bucket",
-            messagingSenderId: "tu-messaging-sender-id",
-            appId: "tu-app-id",
-            measurementId: "tu-measurement-id"
+            apiKey: "AIzaSyDo3NfinUt7wehuE5pOnYC51Z8iObdiBl4",
+            authDomain: "zapateria-b222f.firebaseapp.com",
+            projectId: "zapateria-b222f",
+            storageBucket: "zapateria-b222f.appspot.com",
+            messagingSenderId: "697116944046",
+            appId: "1:697116944046:web:2c07f68a503be92a29af3f",
+            measurementId: "G-9G00D9ESGX"
         };
         // Inicializar Firebase
         firebase.initializeApp(firebaseConfig);
@@ -115,4 +176,105 @@
         const shoeForm = document.forms.shoeForm;
         const newShoe = {
             marca: shoeForm.marca.value,
-            talla: shoeForm
+            talla: shoeForm.talla.value,
+            tipo: shoeForm.tipo.value,
+            precio: shoeForm.precio.value,
+            color: shoeForm.color.value,
+            cantidad: shoeForm.cantidad.value,
+            promocion: shoeForm.promocion.value,
+            imagen: shoeForm.imagen.value,
+            proveedor: shoeForm.proveedor.value,
+            stock: shoeForm.stock.value
+        };
+
+        if (currentIndex === null) {
+            // Crear un nuevo zapato
+            await dbCollection.add(newShoe);
+        } else {
+            // Actualizar zapato existente
+            const id = shoes[currentIndex].id;
+            await dbCollection.doc(id).update(newShoe);
+        }
+
+        loadShoes();
+        shoeForm.reset();
+        currentIndex = null;
+    }
+
+    async function loadShoes() {
+        const snapshot = await dbCollection.get();
+        shoes = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+        renderTable();
+    }
+
+    function renderTable() {
+        const tableBody = document.getElementById('shoeTableBody');
+        tableBody.innerHTML = '';
+
+        shoes.forEach((shoe, index) => {
+            const row = document.createElement('tr');
+
+            // Crear celdas para cada propiedad del zapato
+            const properties = ['marca', 'talla', 'tipo', 'precio', 'color', 'cantidad', 'promocion', 'imagen', 'proveedor', 'stock'];
+            properties.forEach(property => {
+                const cell = document.createElement('td');
+                if (property === 'imagen') {
+                    const img = document.createElement('img');
+                    img.src = shoe[property];
+                    img.style.maxWidth = '50px';
+                    cell.appendChild(img);
+                } else {
+                    cell.innerText = shoe[property];
+                }
+                row.appendChild(cell);
+            });
+
+            // Crear celda para los botones de editar y eliminar
+            const actionsCell = document.createElement('td');
+
+            const editButton = document.createElement('button');
+            editButton.innerText = 'Editar';
+            editButton.onclick = () => loadForm(index);
+            actionsCell.appendChild(editButton);
+
+            const deleteButton = document.createElement('button');
+            deleteButton.innerText = 'Eliminar';
+            deleteButton.onclick = () => deleteShoe(index);
+            actionsCell.appendChild(deleteButton);
+
+            row.appendChild(actionsCell);
+
+            // Agregar la fila a la tabla
+            tableBody.appendChild(row);
+        });
+    }
+
+    function loadForm(index) {
+        const shoe = shoes[index];
+        const shoeForm = document.forms.shoeForm;
+        shoeForm.marca.value = shoe.marca;
+        shoeForm.talla.value = shoe.talla;
+        shoeForm.tipo.value = shoe.tipo;
+        shoeForm.precio.value = shoe.precio;
+        shoeForm.color.value = shoe.color;
+        shoeForm.cantidad.value = shoe.cantidad;
+        shoeForm.promocion.value = shoe.promocion;
+        shoeForm.imagen.value = shoe.imagen;
+        shoeForm.proveedor.value = shoe.proveedor;
+        shoeForm.stock.value = shoe.stock;
+        currentIndex = index;
+    }
+
+    async function deleteShoe(index) {
+        const id = shoes[index].id;
+        await dbCollection.doc(id).delete();
+        loadShoes();
+        document.forms.shoeForm.reset();
+        currentIndex = null;
+    }
+
+    // Cargar zapatos al cargar la página
+    loadShoes();
+</script>
+</body>
+</html>
